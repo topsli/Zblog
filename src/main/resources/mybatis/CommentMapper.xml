@@ -4,11 +4,11 @@
 
 <mapper namespace="com.zblog.core.dal.mapper.CommentMapper">
 
-   <select id="loadById" parameterType="java.lang.String" resultType="Comment">  
+   <select id="loadById" parameterType="java.lang.String" resultType="com.zblog.core.dal.entity.Comment">
       select id, postid, parent, email, url, ip, agent, content, status, creator, createTime from comment where id = #{id}
    </select>
    
-   <select id="list" parameterType="PageModel" resultType="MapContainer">  
+   <select id="list" parameterType="com.zblog.core.plugin.PageModel" resultType="com.zblog.core.plugin.MapContainer">
      select c.id, c.postid, c.url, c.email, c.ip, c.content, c.creator, c.status, c.createTime, p.title, t.id as pid, t.creator as pcreator
        from comment c left join post p on c.postid=p.id left join comment t on c.parent=t.id
        where c.status in <foreach collection="query.status" open="(" close=")" item="item" separator=",">#{item}</foreach>
@@ -18,11 +18,11 @@
      select status, count(*) as count from comment group by status
    </select>
    
-   <select id="listRecent" resultType="CommentVO">  
+   <select id="listRecent" resultType="com.zblog.service.vo.CommentVO">
      select * from comment c order by c.createTime desc limit 10
    </select>
    
-   <select id="listByPost" resultType="CommentVO">
+   <select id="listByPost" resultType="com.zblog.core.dal.entity.Comment">
      select id, content, creator, url, status, parent, createTime from comment c 
      where postid=#{postid} and (status='approve' <if test="creator!=null and creator!=''"> or creator=#{creator} </if>) 
      order by c.createTime desc
@@ -32,7 +32,7 @@
      select count(*) from comment
    </select>
    
-   <insert id="insert" parameterType="Comment">
+   <insert id="insert" parameterType="com.zblog.core.dal.entity.Comment">
       insert into comment(id,postid, parent, email, url, ip, agent,content, creator, createTime) 
          values(#{id},#{postid},#{parent},#{email},#{url},#{ip},#{agent},#{content},#{creator},#{createTime})
    </insert>

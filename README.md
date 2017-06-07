@@ -49,3 +49,6 @@ a java blog
   
 ### 作者博客
   (http://www.zhouhaocheng.cn)
+  
+  ###
+ 在tomcat webapp 部署为zblog,  admin/123456

@@ -76,23 +76,25 @@ public class StatelessCsrfFilter extends OncePerRequestFilter{
       }
     }
 
-    if(METHODS.contains(request.getMethod())){
-      boolean ajax = ServletUtils.isAjax(request);
-      CookieUtil cookieUtil = new CookieUtil(request, response);
-      String csrfToken = cookieUtil.getCookie(Constants.COOKIE_CSRF_TOKEN, false);
-      if(ajax && !isAjaxVerificationToken(request, csrfToken)){
-        response.setContentType("application/json");
-        response.setCharacterEncoding(Constants.ENCODING_UTF_8.name());
-        response.getWriter().write("{'status':'403','success':false,'msg':'非法请求,请刷新重试'}");
-        return;
-      }
+//    if(METHODS.contains(request.getMethod())){
+//      boolean ajax = ServletUtils.isAjax(request);
+//      CookieUtil cookieUtil = new CookieUtil(request, response);
+//      String csrfToken = cookieUtil.getCookie(Constants.COOKIE_CSRF_TOKEN, false);
+//      if(ajax && !isAjaxVerificationToken(request, csrfToken)){
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding(Constants.ENCODING_UTF_8.name());
+//        response.getWriter().write("{'status':'403','success':false,'msg':'非法请求,请刷新重试'}");
+//        return;
+//      }
+
+
 //      else if(!ajax && !isVerificationToken(request, csrfToken)){
 //        // if(response.isCommitted())
 //        //这个错误没有给出明确错误信息，导致开发者不便追踪问题，一直以为是spring 参数解析问题，当然tomcat等容器没有设置项目名访问是没有问题的
 //        response.sendError(HttpServletResponse.SC_BAD_REQUEST,"非法请求，请刷新重试");
 //        return;
 //      }
-    }
+//    }
 
     filterChain.doFilter(request, response);
   }

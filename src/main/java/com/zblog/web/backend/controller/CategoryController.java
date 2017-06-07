@@ -7,10 +7,7 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.zblog.biz.CategoryManager;
 import com.zblog.core.dal.entity.Category;
@@ -54,8 +51,10 @@ public class CategoryController{
   }
 
   @ResponseBody
-  @RequestMapping(method = RequestMethod.POST)
-  public Object insert(Category category, String parent){
+  @RequestMapping(value = "/add",method = RequestMethod.POST)
+  public Object insert(String parent,String name){
+    Category category = new Category();
+    category.setName(name);
     MapContainer form = CategoryFormValidator.validateInsert(category);
     if(!form.isEmpty()){
       return form.put("success", false);
@@ -68,8 +67,8 @@ public class CategoryController{
   }
 
   @ResponseBody
-  @RequestMapping(value = "/{categoryName}", method = RequestMethod.DELETE)
-  public Object remove(@PathVariable String categoryName){
+  @RequestMapping(value = "/remove", method = RequestMethod.POST)
+  public Object remove(@RequestParam(value="categoryName") String categoryName){
     categoryManager.remove(categoryName);
     return new MapContainer("success", true);
   }
